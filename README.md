@@ -1,6 +1,6 @@
-# 🎸 Federated Continual Instruction Tuning [ICCV 2025]
+# 🎸 Federated Continual Instruction Tuning (ICCV 2025)
 
-[![🤗 Dataset (HuggingFace)](https://huggingface.co/datasets/MLLM-CL/FCIT)  [![📑 Paper (arXiv:2503.12897)](https://img.shields.io/badge/arXiv-2503.12941-b31b1b.svg?logo=arXiv)](https://arxiv.org/pdf/2503.12897)
+[![🤗 Dataset (HuggingFace)](https://img.shields.io/badge/Dataset-HuggingFace-FFD21E.svg?logo=huggingface&logoColor=yellow)](https://huggingface.co/datasets/MLLM-CL/FCIT)  [![📑 Paper (arXiv:2503.12897)](https://img.shields.io/badge/arXiv-2503.12941-b31b1b.svg?logo=arXiv)](https://arxiv.org/pdf/2503.12897)
 
 This repo is the official implementation of ICCV 2025 paper: **[Federated Continual Instruction Tuning](https://arxiv.org/pdf/2503.12897)**
 

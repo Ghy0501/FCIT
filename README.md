@@ -1,118 +1,154 @@
-# CoIN: A Benchmark of ContinuaL Instruction tuNing for Multimodel Large Language Model
+# 🎸 Federated Continual Instruction Tuning (ICCV 2025)
 
-Cheng Chen, Junchen Zhu, Xu Luo, Hengtao Shen, LianLi Gao, Jingkuan Song.
+[![🤗 Dataset (HuggingFace)](https://img.shields.io/badge/Dataset-HuggingFace-FFD21E.svg?logo=huggingface&logoColor=yellow)](https://huggingface.co/datasets/MLLM-CL/FCIT)  [![📑 Paper (arXiv:2503.12897)](https://img.shields.io/badge/arXiv-2503.12941-b31b1b.svg?logo=arXiv)](https://arxiv.org/pdf/2503.12897)
 
-<img src="./assets/architecture.png">
+This repo is the official implementation of ICCV 2025 paper: **[Federated Continual Instruction Tuning](https://arxiv.org/pdf/2503.12897)**
+
+> Federated Continual Instruction Tuning
+>
+> Haiyang Guo, Fanhu Zeng, Fei Zhu, Wenzhuo Liu, Da-Han Wang, Jian Xu, Xu-Yao Zhang, Cheng-Lin Liu
+
+![setting](figure/setting.jpg)
+
+## News
+
+- **[2025.06.25]** **FCIT** has been accepted by **ICCV 2025**! :tada:
 
 ## Abstract
-Instruction tuning demonstrates impressive performance in adapting Multimodal Large Language Models (MLLMs) to follow task instructions and improve generalization ability. By extending tuning across diverse tasks, MLLMs can further enhance their understanding of world knowledge and instruction intent. However, continual instruction tuning has been largely overlooked and there are no public benchmarks available. In this paper, we present CoIN, a comprehensive benchmark tailored for assessing the behavior of existing MLLMs under continual instruction tunning. CoIN comprises 10 meticulously crafted datasets spanning 8 tasks, ensuring diversity and serving as a robust evaluation framework to assess crucial aspects of continual instruction tuning, such as task order, instruction diversity and volume. Additionally, apart from traditional evaluation, we design another LLM-based metric to assess the knowledge preserved within MLLMs for reasoning. Following an in-depth evaluation of several MLLMs, we demonstrate that they still suffer catastrophic forgetting, and the failure in instruction alignment assumes the main responsibility, instead of reasoning knowledge forgetting. To this end, we introduce MoELoRA which is effective in retaining the previous instruction alignment.
 
-## Install
-1. Clone this repository and navigate to CoIN folder
-``` 
-git clone https://github.com/zackschen/CoIN.git
-cd CoIN 
-```
-2. Install Package
-```
-conda create -n coin python=3.10 -y
-conda activate coin
+A vast amount of instruction tuning data is crucial for the impressive performance of Large Multimodal Models (LMMs), but the associated computational costs and data collection demands during supervised fine-tuning make it impractical for most researchers. Federated learning (FL) has the potential to leverage all distributed data and training resources to reduce the overhead of joint training. However, most existing methods assume a fixed number of tasks, while in real-world scenarios, clients continuously encounter new knowledge and often struggle to retain old tasks due to memory constraints. In this work, we introduce the Federated Continual Instruction Tuning (FCIT) benchmark to model this real-world challenge. Our benchmark includes two realistic scenarios, encompassing four different settings and twelve carefully curated instruction tuning datasets. To address the challenges posed by FCIT, we propose dynamic knowledge organization to effectively integrate updates from different tasks during training and subspace selective activation to allocate task-specific output during inference. Extensive experimental results demonstrate that our proposed method significantly enhances model performance across varying levels of data heterogeneity and catastrophic forgetting.
+
+## Installation
+
+The installation of our environment is the same as [CoIN](https://github.com/zackschen/CoIN) and [HiDe-LLaVA](https://github.com/Ghy0501/HiDe-LLaVA).
+
+```bash
+conda create -n FCIT python=3.10 -y
+conda activate hide
 pip install --upgrade pip
 pip install -e .
-```
-
-3. Install additional packages for training cases
-```
 pip install -e ".[train]"
 pip install flash-attn --no-build-isolation
 ```
 
-This repo is based on [LLaVA](https://github.com/haotian-liu/LLaVA). 
-If you meet a problem, maybe you could find some solutions in issuses.
+To measure the metrics of caption tasks, please install the following three packages:
 
-## Dataset
-Please download the images from the constituting dataset: ScienceQA, VQAv2, VizWiz, TextVQA, GQA, OCR-VQA, ImageNet, RefCOCO, RefCOCO+, and RefCOCOg.
-|  Image Source   | Download Path  |
-|  :----:  | :----:  |
-| COCO | [train2014](http://images.cocodataset.org/zips/train2014.zip), [test2015](http://images.cocodataset.org/zips/test2015.zip), [val2014](http://images.cocodataset.org/zips/val2014.zip) |
-| RefCOCO  | [annotation](https://bvisionweb1.cs.unc.edu/licheng/referit/data/refcoco.zip) | 
-| RefCOCO+  | [annotation](https://bvisionweb1.cs.unc.edu/licheng/referit/data/refcoco+.zip) | 
-| RefCOCOg  | [annotation](https://bvisionweb1.cs.unc.edu/licheng/referit/data/refcocog.zip) | 
-| ImageNet  | [images](https://image-net.org/challenges/LSVRC/index.php) | 
-| OCR-VQA  | [images](https://drive.google.com/drive/folders/1_GYPY5UkUy7HIcR0zq3ZCFgeZN7BAfm_) | 
-| GQA  | [images](https://downloads.cs.stanford.edu/nlp/data/gqa/images.zip) | 
-| TextVQA  | [train](https://dl.fbaipublicfiles.com/textvqa/images/train_val_images.zip),[test](https://dl.fbaipublicfiles.com/textvqa/images/test_images.zip) | 
-| ScienceQA  | [images](https://drive.google.com/drive/folders/1w8imCXWYn2LxajmGeGH_g5DaL2rabHev) | 
-| VizWiz  | [train](https://vizwiz.cs.colorado.edu/VizWiz_final/images/train.zip), [val](https://vizwiz.cs.colorado.edu/VizWiz_final/images/val.zip), [test](https://vizwiz.cs.colorado.edu/VizWiz_final/images/test.zip) | 
+```bash
+pip install nltk==3.9.1
+pip install pycocotools==2.0.8
+pip install pycocoevalcap==1.2
+```
+We recommend replacing the eval.py file under that path `/envs/FCIT/lib/python3.10/site-packages/pycocoevalcap/` in your environment with the eval.py file that we have provided in the repository to avoid unwanted error reporting and time overhead.
+
+
+Technical issues can be reported and addressed through the official GitHub issue trackers for both projects: [CoIN](https://github.com/zackschen/CoIN) and [LLaVA](https://github.com/haotian-liu/LLaVA).
+
+## FCIT Benchmark
+
+Please download the images from the constituting dataset：
+
+|Image Source | Download Path|
+| :-: | :-: |
+|ArxivQA|[images](https://huggingface.co/datasets/MMInstruction/ArxivQA/tree/main)|
+|ImageNet-R|[images](https://huggingface.co/datasets/HaiyangGuo/UCIT/tree/main/UCIT/ImageNet-R)|
+|IconQA|[images](https://iconqa.github.io/)|
+|CLEVR-Math|[images](https://huggingface.co/datasets/dali-does/clevr-math/tree/main)|
+|super-CLEVR|[images](https://github.com/Lizw14/Super-CLEVR)|
+|Flickr30k|[images](https://huggingface.co/datasets/HaiyangGuo/UCIT/tree/main/UCIT/Flickr30k)|
+|DVQA|[images](https://huggingface.co/datasets/MLLM-CL/FCIT/tree/main/dataset)|
+|Grounding, AOKVQA|[train](http://images.cocodataset.org/zips/train2014.zip) [val](http://images.cocodataset.org/zips/val2014.zip) [test](http://images.cocodataset.org/zips/test2014.zip)|
+|OCR-VQA|[images](https://drive.google.com/drive/folders/1_GYPY5UkUy7HIcR0zq3ZCFgeZN7BAfm_)|
+|TabMWP|[images](https://github.com/lupantech/PromptPG)|
+|FigureQA|[images](https://huggingface.co/datasets/MLLM-CL/FCIT/tree/main/dataset)|
 
 After downloading all of them, organize the data as follows:
 ```
-├── COCO2014
-│   └── train2014
-├── GQA
-│   └── images
-├── OCR-VQA
-│   └── images
-├── TextVQA
-│   └── train_images
-│   └── test_images
+|-- datasets
+    |-- ArxivQA
+        |-- images/
+    |-- CLEVR
+        |-- images
+            |-- train/
+            |-- test/
+            |-- val/
+    |-- Flickr30k
+        |-- train/
+        |-- val/
+    |-- IconQA
+        |-- iconqa_data/
+            |-- iconqa/
+    |-- ImageNet-R
+        |-- train/
+        |-- test/
+    |-- COCO2014
+        |-- train2014/
+        |-- test2014/
+        |-- val2014/
+    |-- super-CLEVR
+        |-- images/
+    |-- FigureQA
+        |-- images/
+    |-- OCR-VQA
+        |-- images/
+    |-- DVQA
+        |-- images/
+    |-- TabMWP
+        |-- tables/
 ```
 
-Then, please download the instructions from our datasets path: [CoIN_Dataset](https://huggingface.co/datasets/Zacks-Chen/CoIN/tree/main)
-then, organize the instructions as follows:
+Please download the `instructions` and `partitioned_data` from our [HuggingFace](https://huggingface.co/datasets/HaiyangGuo/UCIT) page, then, organize the instructions as follows:
 ```
-├── Instruction_Original
-│   └── GQA
-│       └── train.json
-│       └── test.json
-│   └── ScienceQA
-│       └── train.json
-│       └── test.json
-├── Instruction_Type2
-│   └── GQA
-│       └── train.json
-│       └── test.json
+|-- instructions
+    |-- ArxivQA
+    |-- CLEVR-Math
+    |-- Flickr30k-cap
+    |-- IconQA
+    |-- ImageNet-R
+    |-- super-CLEVR
+    |-- DVQA
+    |-- FigureQA
+    |-- Grounding
+    |-- OCRVQA
+    |-- AOKVQA
+    |-- TabMWP
+|-- partitioned_data
+    |-- Capability-related
+        |-- cap
+    |-- Task-related
+        |-- seq
 ```
 
-## Instruction Tuning
-First, downloading the pretrained projectors in [LLaVA Model_Zoo](https://github.com/haotian-liu/LLaVA/blob/main/docs/MODEL_ZOO.md).
+## Pre-trained Weights
 
-Setting `pretrain_mm_mlp_adapter` to the projector path.
-You could modify the `deepspeed config` to change the deepspeed config.
+Please download [LLaVA](https://huggingface.co/liuhaotian/llava-v1.5-7b) and [CLIP](https://huggingface.co/openai/clip-vit-large-patch14-336), and use the **config.json** provided in this repository replace the original config.json in LLaVA.
 
-We provide the scripts of our train order in `scripts/*/Train`.
-Note, the `output_dir` of the previous script is the `previous_task_model_path` of the next training process.
-Then, you could tune these datasets in your order.
+## Training and Evaluation
 
-We provide scripts for training MOELoRA with LLaVA in `scripts/LLaVA/Train_MOE`. Additionally, you can modify the code to train MiniGPT-V2 and Qwen-VL, following the example in lines 138-152 of `ETrain/Models/LLaVA/utils.py`.
+The training script is in `scripts/LLaVA/Train_FCIT.../train_all.sh`. Before running, please do not forget to **modify the path** in the files to your actual path.
 
-## Evaluation
-We have prepared the scripts to evaluate the trained model in `scripts/*/Eval`.
+e.g., Task-related Homogeneous FCIT setting with beta=1.0
+``` 
+sh scripts/LLaVA/Train_FCIT_task_hom/train_all.sh 1.0
+```
 
-These scripts will evalute the trained model and create the prompts (`prompt_to_eval.json`) for evaluating the general knowldege.
+The evaluation script is in `scripts/LLaVA/Eval_FCIT/`. Before running, please do not forget to **modify the path** in the files to your actual path.
 
-To evaluate the general knowldege, you could add the result path to `scripts/Eval_GeneralKnowledge/eval_prompt_slim.sh` and run it, this script file will output a score to indicate the general knowledge.
-
-## To Do
-1. - [x] Evaluating on more MLLM, MiniGPT-4, ~~MiniGPT-V2~~, InstrctBlip, ~~Qwen-VL~~; MiniGPT-V2, Qwen-VL have been merged. In addition, since MiniGPT-4 and InstrctBlip are based on LAVIS resp, you can modify the config to train with these model.
-2. - [] Evaluating on different size of MLLM; We are conducting experiments with larger model, 13b llava.
-3. - [] Evaluating on full finetune.
+e.g., Task-related Homogeneous FCIT setting with beta=1.0
+``` 
+sh scripts/LLaVA/Eval_FCIT/Eval_FCIT_task_hom.sh 1.0
+```
 
 ## Citation
-```
-@misc{chen2024coin,
-    title={CoIN: A Benchmark of Continual Instruction tuNing for Multimodel Large Language Model}, 
-    author={Cheng Chen and Junchen Zhu and Xu Luo and Hengtao Shen and Lianli Gao and Jingkuan Song},
-    year={2024},
-    eprint={2403.08350},
-    archivePrefix={arXiv},
-    primaryClass={cs.CV}
+
+```bibtex
+@article{guo2025federated,
+  title={Federated continual instruction tuning},
+  author={Guo, Haiyang and Zeng, Fanhu and Zhu, Fei and Liu, Wenzhuo and Wang, Da-Han and Xu, Jian and Zhang, Xu-Yao and Liu, Cheng-Lin},
+  journal={arXiv preprint arXiv:2503.12897},
+  year={2025}
 }
 ```
 
-## Acknowledgement
-[LLaVA](https://github.com/haotian-liu/LLaVA): the codebase we built upon, and our base model LLaVA-1.5-7b that has the amazing vision-language capabilities!
+## Acknowledgememnt
 
-[LAVIS](https://github.com/salesforce/LAVIS): the codebase MiniGPT and InstructBlip are built upon.
-
-[MiniGPT](https://github.com/Vision-CAIR/MiniGPT-4.git): the codebase of MinigGPT and MinitGPT-v2.
+This repository is built upon the [LLaVA](https://github.com/haotian-liu/LLaVA), [CoIN](https://github.com/zackschen/CoIN), [Shepherd](https://github.com/JayZhang42/FederatedGPT-Shepherd), and [OpenFedLLM](https://github.com/rui-ye/OpenFedLLM) projects. We sincerely thank the authors for their valuable contributions to the research community.

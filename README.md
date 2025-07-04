@@ -16,7 +16,7 @@ This repo is the official implementation of ICCV 2025 paper: **[Federated Contin
 
 ## Abstract
 
-A vast amount of instruction tuning data is crucial for the impressive performance of Large Multimodal Models (LMMs), but the associated computational costs and data collection demands during supervised fine-tuning make it impractical for most researchers. Federated learning~(FL) has the potential to leverage all distributed data and training resources to reduce the overhead of joint training. However, most existing methods assume a fixed number of tasks, while in real-world scenarios, clients continuously encounter new knowledge and often struggle to retain old tasks due to memory constraints. In this work, we introduce the Federated Continual Instruction Tuning~(FCIT) benchmark to model this real-world challenge. Our benchmark includes two realistic scenarios, encompassing four different settings and twelve carefully curated instruction tuning datasets. To address the challenges posed by FCIT, we propose dynamic knowledge organization to effectively integrate updates from different tasks during training and subspace selective activation to allocate task-specific output during inference. Extensive experimental results demonstrate that our proposed method significantly enhances model performance across varying levels of data heterogeneity and catastrophic forgetting.
+A vast amount of instruction tuning data is crucial for the impressive performance of Large Multimodal Models (LMMs), but the associated computational costs and data collection demands during supervised fine-tuning make it impractical for most researchers. Federated learning (FL) has the potential to leverage all distributed data and training resources to reduce the overhead of joint training. However, most existing methods assume a fixed number of tasks, while in real-world scenarios, clients continuously encounter new knowledge and often struggle to retain old tasks due to memory constraints. In this work, we introduce the Federated Continual Instruction Tuning (FCIT) benchmark to model this real-world challenge. Our benchmark includes two realistic scenarios, encompassing four different settings and twelve carefully curated instruction tuning datasets. To address the challenges posed by FCIT, we propose dynamic knowledge organization to effectively integrate updates from different tasks during training and subspace selective activation to allocate task-specific output during inference. Extensive experimental results demonstrate that our proposed method significantly enhances model performance across varying levels of data heterogeneity and catastrophic forgetting.
 
 ## Installation
 
@@ -121,6 +121,22 @@ Please download the `instructions` and `partitioned_data` from our [HuggingFace]
 ## Pre-trained Weights
 
 Please download [LLaVA](https://huggingface.co/liuhaotian/llava-v1.5-7b) and [CLIP](https://huggingface.co/openai/clip-vit-large-patch14-336), and use the **config.json** provided in this repository replace the original config.json in LLaVA.
+
+## Training and Evaluation
+
+The training script is in `scripts/LLaVA/Train_FCIT.../train_all.sh`. Before running, please do not forget to **modify the path** in the files to your actual path.
+
+e.g., Task-related Homogeneous FCIT setting with beta=1.0
+``` 
+sh scripts/LLaVA/Train_FCIT_task_hom/train_all.sh 1.0
+```
+
+The evaluation script is in `scripts/LLaVA/Eval_FCIT/`. Before running, please do not forget to **modify the path** in the files to your actual path.
+
+e.g., Task-related Homogeneous FCIT setting with beta=1.0
+``` 
+sh scripts/LLaVA/Eval_FCIT/Eval_FCIT_task_hom.sh 1.0
+```
 
 ## Citation
 

@@ -8,6 +8,10 @@ This repo is the official implementation of ICCV 2025 paper: **[Federated Contin
 >
 > Haiyang Guo, Fanhu Zeng, Fei Zhu, Wenzhuo Liu, Da-Han Wang, Jian Xu, Xu-Yao Zhang, Cheng-Lin Liu
 
+## Abstract
+
+A vast amount of instruction tuning data is crucial for the impressive performance of Large Multimodal Models (LMMs), but the associated computational costs and data collection demands during supervised fine-tuning make it impractical for most researchers. Federated learning~(FL) has the potential to leverage all distributed data and training resources to reduce the overhead of joint training. However, most existing methods assume a fixed number of tasks, while in real-world scenarios, clients continuously encounter new knowledge and often struggle to retain old tasks due to memory constraints. In this work, we introduce the Federated Continual Instruction Tuning~(FCIT) benchmark to model this real-world challenge. Our benchmark includes two realistic scenarios, encompassing four different settings and twelve carefully curated instruction tuning datasets. To address the challenges posed by FCIT, we propose dynamic knowledge organization to effectively integrate updates from different tasks during training and subspace selective activation to allocate task-specific output during inference. Extensive experimental results demonstrate that our proposed method significantly enhances model performance across varying levels of data heterogeneity and catastrophic forgetting.
+
 ## Installation
 
 The installation of our environment is the same as [CoIN](https://github.com/zackschen/CoIN) and [HiDe-LLaVA](https://github.com/Ghy0501/HiDe-LLaVA).
@@ -45,11 +49,11 @@ Please download the images from the constituting dataset：
 |CLEVR-Math|[images](https://huggingface.co/datasets/dali-does/clevr-math/tree/main)|
 |super-CLEVR|[images](https://github.com/Lizw14/Super-CLEVR)|
 |Flickr30k|[images](https://huggingface.co/datasets/HaiyangGuo/UCIT/tree/main/UCIT/Flickr30k)|
-|DVQA|[images](/mnt/haiyangguo/mywork/CL-MLLM/LLaVA-ModalPrompt/scripts/ModalPrompt/Train_DCL/train_all.sh)|
+|DVQA|[images](https://huggingface.co/datasets/MLLM-CL/FCIT/tree/main/dataset)|
 |Grounding, AOKVQA|[train](http://images.cocodataset.org/zips/train2014.zip) [val](http://images.cocodataset.org/zips/val2014.zip) [test](http://images.cocodataset.org/zips/test2014.zip)|
 |OCR-VQA|[images](https://drive.google.com/drive/folders/1_GYPY5UkUy7HIcR0zq3ZCFgeZN7BAfm_)|
 |TabMWP|[images](https://github.com/lupantech/PromptPG)|
-|FigureQA|[images]|
+|FigureQA|[images](https://huggingface.co/datasets/MLLM-CL/FCIT/tree/main/dataset)|
 
 After downloading all of them, organize the data as follows:
 ```
@@ -86,7 +90,7 @@ After downloading all of them, organize the data as follows:
         |-- tables/
 ```
 
-Please download the instructions from our [HuggingFace](https://huggingface.co/datasets/HaiyangGuo/UCIT) page, then, organize the instructions as follows:
+Please download the `instructions` and `partitioned_data` from our [HuggingFace](https://huggingface.co/datasets/HaiyangGuo/UCIT) page, then, organize the instructions as follows:
 ```
 |-- instructions
     |-- ArxivQA
@@ -103,7 +107,9 @@ Please download the instructions from our [HuggingFace](https://huggingface.co/d
     |-- TabMWP
 |-- partitioned_data
     |-- Capability-related
+        |-- cap
     |-- Task-related
+        |-- seq
 ```
 
 ## Pre-trained Weights

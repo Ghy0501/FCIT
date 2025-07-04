@@ -8,7 +8,7 @@ This repo is the official implementation of ICCV 2025 paper: **[Federated Contin
 >
 > Haiyang Guo, Fanhu Zeng, Fei Zhu, Wenzhuo Liu, Da-Han Wang, Jian Xu, Xu-Yao Zhang, Cheng-Lin Liu
 
-![setting](figure/setting.png)
+![setting](figure/setting.jpg)
 
 ## Abstract
 

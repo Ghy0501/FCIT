@@ -96,7 +96,7 @@ After downloading all of them, organize the data as follows:
         |-- tables/
 ```
 
-Please download the `instructions` and `partitioned_data` from our [HuggingFace](https://huggingface.co/datasets/HaiyangGuo/UCIT) page, then, organize the instructions as follows:
+Please download the `instructions` and `partitioned_data` from our [HuggingFace](https://huggingface.co/datasets/MLLM-CL/FCIT) page, then, organize the instructions as follows:
 ```
 |-- instructions
     |-- ArxivQA

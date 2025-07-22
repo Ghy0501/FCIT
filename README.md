@@ -12,6 +12,7 @@ This repo is the official implementation of ICCV 2025 paper: **[Federated Contin
 
 ## News
 
+- **[2025.07.22]** We release camera-ready version on **[Arxiv](https://arxiv.org/pdf/2503.12897)**. :tada:
 - **[2025.06.25]** **FCIT** has been accepted by **ICCV 2025**! :tada:
 
 ## Abstract

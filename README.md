@@ -25,7 +25,7 @@ The installation of our environment is the same as [CoIN](https://github.com/zac
 
 ```bash
 conda create -n FCIT python=3.10 -y
-conda activate hide
+conda activate FCIT
 pip install --upgrade pip
 pip install -e .
 pip install -e ".[train]"
